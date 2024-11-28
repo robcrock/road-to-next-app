@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
+import { LucideKanban } from "lucide-react";
 
+import { buttonVariants } from "@/components/ui/button";
 import { homePath, ticketsPath } from "@/paths";
 
 import "./globals.css";
-import { buttonVariants } from "@/components/ui/button";
-import { LucideKanban } from "lucide-react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

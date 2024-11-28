@@ -1,8 +1,6 @@
-import clsx from "clsx";
 import Link from "next/link";
+import { LucideCircleCheck, LucideFileText, LucidePencil } from "lucide-react";
 
-import { initialTickets } from "@/data";
-import { ticketPath } from "@/paths";
 import {
   Card,
   CardContent,
@@ -11,7 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { LucideCircleCheck, LucideFileText, LucidePencil } from "lucide-react";
+import { initialTickets } from "@/data";
+import { ticketPath } from "@/paths";
 
 const TICKET_ICONS = {
   OPEN: <LucideFileText />,
