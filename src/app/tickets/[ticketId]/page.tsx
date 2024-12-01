@@ -3,13 +3,11 @@ import { notFound } from "next/navigation";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
 import { getTicket } from "@/features/ticket/queries/get-ticket";
 
-type TicketPageProps = {
-  params: {
-    ticketId: string;
-  };
-};
+// INFO: Referencing https://nextjs.org/docs/app/building-your-application/upgrading/version-15#asynchronous-page
+type Params = Promise<{ ticketId: string }>;
 
-const TicketPage = async ({ params }: TicketPageProps) => {
+const TicketPage = async (props: { params: Params }) => {
+  const params = await props.params;
   const ticket = await getTicket(params.ticketId);
 
   if (!ticket) {
