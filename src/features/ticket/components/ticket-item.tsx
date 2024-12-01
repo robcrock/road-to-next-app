@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Ticket } from "@prisma/client";
 import clsx from "clsx";
-import { LucideSquareArrowOutUpRight } from "lucide-react";
+import { LucideSquareArrowOutUpRight, LucideTrash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ticketPath } from "@/paths";
 
+import { deleteTicket } from "../actions/delete-ticket";
 import { TICKET_ICONS } from "../constants";
 
 type TicketItemProps = {
@@ -17,12 +18,22 @@ type TicketItemProps = {
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
   const { id, title, content, status } = ticket;
 
-  const detailButton = isDetail ? null : (
+  const detailButton = (
     <Button asChild size="icon" variant="outline">
       <Link href={ticketPath(id)} className="text-sm ">
         <LucideSquareArrowOutUpRight className="w-4 h-4" />
       </Link>
     </Button>
+  );
+
+  const deleteButton = (
+    // We could have just passed the deleteTicket function if we didn't need to
+    // pass the ticketId as a parameter to the function.
+    <form action={deleteTicket.bind(null, ticket.id)}>
+      <Button size="icon" variant="outline">
+        <LucideTrash className="w-4 h-4" />
+      </Button>
+    </form>
   );
 
   return (
@@ -51,7 +62,9 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           </span>
         </CardContent>
       </Card>
-      <div className="flex flex-col gap-y-1">{detailButton}</div>
+      <div className="flex flex-col gap-y-1">
+        {isDetail ? deleteButton : detailButton}
+      </div>
     </div>
   );
 };
