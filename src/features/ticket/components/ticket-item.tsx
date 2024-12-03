@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Ticket } from "@prisma/client";
 import clsx from "clsx";
 import {
-  LucideEdit,
   LucidePencil,
   LucideSquareArrowOutUpRight,
   LucideTrash,
