@@ -4,15 +4,13 @@ import { CardCompact } from "@/components/card-compact";
 import TicketUpsertForm from "@/features/ticket/components/ticket-upsert-form";
 import { getTicket } from "@/features/ticket/queries/get-ticket";
 
-type TicketEditPageProps = {
-  params: {
-    ticketId: string;
-  };
-};
+type Params = Promise<{
+  ticketId: string;
+}>;
 
-const TicketEditPage = async ({ params }: TicketEditPageProps) => {
-  const { ticketId } = await params;
-  const ticket = await getTicket(ticketId);
+const TicketEditPage = async (props: { params: Params }) => {
+  const params = await props.params;
+  const ticket = await getTicket(params.ticketId);
 
   if (!ticket) {
     return notFound();
