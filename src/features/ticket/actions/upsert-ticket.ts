@@ -30,7 +30,7 @@ export const upsertTicket = async (
       update: data,
       create: data,
     });
-  } catch (error) {
+  } catch {
     return { message: "Something went wrong", payload: formData };
   }
 
