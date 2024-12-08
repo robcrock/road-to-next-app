@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { setCookieByKey } from "@/actions/cookies";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
 
@@ -15,5 +16,6 @@ export const deleteTicket = async (id: string) => {
 
   // INFO: Revalidate the tickets page to reflect the changes before redirecting
   revalidatePath(ticketsPath());
+  await setCookieByKey("toast", "Ticket deleted");
   redirect(ticketsPath());
 };
