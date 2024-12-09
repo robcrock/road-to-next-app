@@ -8,6 +8,7 @@ import {
   LucideTrash,
 } from "lucide-react";
 
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -49,13 +50,14 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
   );
 
   const deleteButton = (
-    // We could have just passed the deleteTicket function if we didn't need to
-    // pass the ticketId as a parameter to the function.
-    <form action={deleteTicket.bind(null, ticket.id)}>
-      <Button size="icon" variant="outline">
-        <LucideTrash className="w-4 h-4" />
-      </Button>
-    </form>
+    <ConfirmDialog
+      action={deleteTicket.bind(null, ticket.id)}
+      trigger={
+        <Button variant="outline" size="icon">
+          <LucideTrash className="w-4 h-4" />
+        </Button>
+      }
+    />
   );
 
   const trigger = (
