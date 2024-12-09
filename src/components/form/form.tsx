@@ -7,12 +7,32 @@ type FormProps = {
   action: (payload: FormData) => void;
   actionState: ActionState;
   children: React.ReactNode;
+  onSuccess?: (actionState: ActionState) => void;
+  onError?: (actionState: ActionState) => void;
 };
 
-const Form = ({ action, actionState, children }: FormProps) => {
+const Form = ({
+  action,
+  actionState,
+  children,
+  onSuccess,
+  onError,
+}: FormProps) => {
   useActionFeedback(actionState, {
-    onSuccess: ({ actionState }) => toast.success(actionState.message),
-    onError: ({ actionState }) => toast.error(actionState.message),
+    onSuccess: ({ actionState }) => {
+      if (actionState.message) {
+        toast.success(actionState.message);
+      }
+
+      onSuccess?.(actionState);
+    },
+    onError: ({ actionState }) => {
+      if (actionState.message) {
+        toast.error(actionState.message);
+      }
+
+      onError?.(actionState);
+    },
   });
   return (
     <form action={action} className="flex flex-col gap-y-2">
