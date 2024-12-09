@@ -3,8 +3,8 @@ import { LucideMessageSquareWarning } from "lucide-react";
 
 type PlaceholderProps = {
   label: string;
-  icon?: React.ReactElement;
-  button?: React.ReactElement;
+  icon?: React.ReactElement<{ className?: string }>;
+  button?: React.ReactElement<{ className?: string }>;
 };
 
 const Placeholder = ({
