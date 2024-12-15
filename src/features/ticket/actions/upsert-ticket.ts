@@ -10,8 +10,9 @@ import {
   fromErrorToActionState,
   toActionState,
 } from "@/components/form/utils/to-action-state";
+import { getAuth } from "@/features/auth/queries/get-auth";
 import { prisma } from "@/lib/prisma";
-import { ticketPath, ticketsPath } from "@/paths";
+import { signInPath, ticketPath, ticketsPath } from "@/paths";
 import { toCent } from "@/utils/currency";
 
 const upsertTicketSchema = z.object({
@@ -26,6 +27,12 @@ export const upsertTicket = async (
   _actionState: ActionState,
   formData: FormData
 ) => {
+  const { user } = await getAuth();
+
+  if (!user) {
+    redirect(signInPath());
+  }
+
   try {
     const data = upsertTicketSchema.parse({
       title: formData.get("title"),
@@ -37,6 +44,8 @@ export const upsertTicket = async (
     // Best practice to convert bounty to cents
     const dbData = {
       ...data,
+      // TODO: Authorization bug to chenge in the future for updating.
+      userId: user.id,
       bounty: toCent(data.bounty),
     };
 
@@ -44,6 +53,7 @@ export const upsertTicket = async (
       where: {
         id: id || "",
       },
+
       update: dbData,
       create: dbData,
     });

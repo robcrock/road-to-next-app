@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Ticket } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import clsx from "clsx";
 import {
   LucideMoreVertical,
@@ -23,7 +23,15 @@ import { TICKET_ICONS } from "../constants";
 import { TicketMoreMenu } from "./ticket-more-menu";
 
 type TicketItemProps = {
-  ticket: Ticket;
+  ticket: Prisma.TicketGetPayload<{
+    include: {
+      user: {
+        select: {
+          username: true;
+        };
+      };
+    };
+  }>;
   isDetail?: boolean;
 };
 
@@ -79,7 +87,9 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           </span>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {ticket.deadline} by {ticket.user.username}
+          </p>
           <p className="text-sm text-muted-foreground">
             {toCurrencyFromCent(ticket.bounty)}
           </p>

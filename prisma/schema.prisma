@@ -20,6 +20,7 @@ model User {
   email        String    @unique
   passwordHash String
   sessions     Session[]
+  tickets      Ticket[]
 }
 
 model Session {
@@ -40,6 +41,10 @@ model Ticket {
   updatedAt DateTime     @updatedAt
   deadline  String
   bounty    Int
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 enum TicketStatus {

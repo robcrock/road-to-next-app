@@ -1,7 +1,19 @@
+import { hash } from "@node-rs/argon2";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+const users = [
+  {
+    username: "admin",
+    email: "admin@admin.com",
+  },
+  {
+    username: "user",
+    // Use your own email
+    email: "rcrocker13@gmail.com",
+  },
+];
 const tickets = [
   {
     title: "Ticket 1",
@@ -27,22 +39,36 @@ const tickets = [
 ];
 
 const seed = async () => {
-  const t0 = performance.now();
-  console.log("Seeding started...");
+  /*
+    Cleaning up our database
 
+    Note: We have to delete the tickets before the users 
+      otherwise we would have tikets without users and that
+      would violate the foreign key constraint.
+
+    Caveat: The note above is only valid if we aren't using
+      referential actions like CASCADE or SET NULL.
+  */
   await prisma.ticket.deleteMany();
+  await prisma.user.deleteMany();
 
-  // Instead of createMany, we'll create tickets one by one with a delay
-  for (const ticket of tickets) {
-    await prisma.ticket.create({
-      data: ticket,
-    });
-    // Add a small delay between creations (e.g., 1000ms)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-  }
+  const passwordHash = await hash("secret");
 
-  const t1 = performance.now();
-  console.log(`Seeding completed in ${t1 - t0} milliseconds.`);
+  // Creating users with the same password
+  const dbUsers = await prisma.user.createManyAndReturn({
+    data: users.map((user) => ({
+      ...user,
+      passwordHash,
+    })),
+  });
+
+  // Creating tickets for the admin user
+  await prisma.ticket.createMany({
+    data: tickets.map((ticket) => ({
+      ...ticket,
+      userId: dbUsers[0].id,
+    })),
+  });
 };
 
 seed();
