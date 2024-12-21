@@ -6,7 +6,7 @@ export const getActivePath = (
   ignorePaths?: string[]
 ) => {
   const closestPath = closest(path, paths.concat(ignorePaths || []));
-  const index = closestPath.indexOf(closestPath);
+  const index = paths.indexOf(closestPath);
 
-  return { active: closestPath, activeIndex: index };
+  return { activePath: closestPath, activeIndex: index };
 };
