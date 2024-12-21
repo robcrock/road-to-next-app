@@ -6,7 +6,7 @@ import { passwordForgotPath, signUpPath } from "@/paths";
 
 const SignInPage = () => {
   return (
-    <div className="flex-1 flex flexcol justify-center items-center">
+    <div className="flex-1 flex flex-col justify-center items-center">
       <CardCompact
         title={"Sign In"}
         description={"Sign in to your account."}
