@@ -13,8 +13,6 @@ import { buttonVariants } from "./ui/button";
 const Header = () => {
   const { user, isFetched } = useAuth();
 
-  console.log("user", user);
-
   if (!isFetched) {
     return null;
   }
