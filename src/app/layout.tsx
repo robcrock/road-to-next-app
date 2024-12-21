@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-import { Header } from "@/components/header";
+import { Sidebar } from "@/app/_navigation/sidebar/components/sidebar";
 import { RedirectToast } from "@/components/redirect-toast";
-import { Sidebar } from "@/components/sidebar/components/sidebar";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+
+import { Header } from "./_navigation/header";
 
 import "./globals.css";
 
