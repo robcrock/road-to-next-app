@@ -8,7 +8,6 @@ import { accountPasswordPath, accountProfilePath } from "@/paths";
 
 const AccountTabs = () => {
   const pathName = usePathname();
-  console.log("pathName", pathName.split("/").at(-1));
   return (
     <Tabs value={pathName.split("/").at(-1)}>
       <TabsList>
