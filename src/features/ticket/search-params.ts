@@ -5,15 +5,21 @@ export const searchParser = parseAsString.withDefault("").withOptions({
   shallow: false,
   clearOnDefault: true,
 });
-export const sortParser = parseAsString.withDefault("newest").withOptions({
+
+export const sortParser = {
+  sortKey: parseAsString.withDefault("createdAt"),
+  sortValue: parseAsString.withDefault("desc"),
+};
+
+export const sortOptions = {
   // we set it to false when we want to requery our server
   shallow: false,
   clearOnDefault: true,
-});
+};
 
 export const searchParamsCache = createSearchParamsCache({
   search: searchParser,
-  sort: sortParser,
+  ...sortParser,
 });
 
 export type ParsedSearchParams = Awaited<
