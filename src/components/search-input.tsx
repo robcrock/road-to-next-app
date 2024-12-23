@@ -29,7 +29,7 @@ const SearchInput = ({ placeholder }: SearchInputProps) => {
         scroll: false,
       });
     },
-    5000
+    250
   );
 
   return <Input placeholder={placeholder} onChange={handleSearch} />;

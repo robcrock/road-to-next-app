@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { SearchParams } from "nuqs/server";
 
 import { CardCompact } from "@/components/card-compact";
 import { Heading } from "@/components/heading";
@@ -6,12 +7,12 @@ import { Spinner } from "@/components/spinner";
 import { getAuth } from "@/features/auth/queries/get-auth";
 import { TicketList } from "@/features/ticket/components/ticket-list";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
-import { SearchParams } from "@/features/ticket/search-params";
+import { searchParamsCache } from "@/features/ticket/search-params";
 
-type TicketPageProps = {
+type TicketsPageProps = {
   searchParams: Promise<SearchParams>;
 };
-const TicketPage = async ({ searchParams }: TicketPageProps) => {
+const TicketsPage = async ({ searchParams }: TicketsPageProps) => {
   const { user } = await getAuth();
   return (
     <div className="flex-1 flex flex-col gap-y-8">
@@ -28,10 +29,13 @@ const TicketPage = async ({ searchParams }: TicketPageProps) => {
       />
 
       <Suspense fallback={<Spinner />}>
-        <TicketList userId={user?.id} searchParams={await searchParams} />
+        <TicketList
+          userId={user?.id}
+          searchParams={searchParamsCache.parse(await searchParams)}
+        />
       </Suspense>
     </div>
   );
 };
 
-export default TicketPage;
+export default TicketsPage;
