@@ -1,11 +1,11 @@
 import { Placeholder } from "@/components/placeholder";
-import { SearchInput } from "@/components/search-input";
-import { SortSelect } from "@/components/sort-select";
 
 import { getTickets } from "../queries/get-tickets";
 import { ParsedSearchParams } from "../search-params";
 
 import { TicketItem } from "./ticket-item";
+import { TicketSearchInput } from "./ticket-search-input";
+import { TicketSortSelect } from "./ticket-sort-select";
 
 type TicketListProps = {
   userId?: string;
@@ -19,8 +19,8 @@ const TicketList = async ({ userId, searchParams }: TicketListProps) => {
     <div className="flex-1 flex flex-col items-center gap-y-4 animate-fade-from-top">
       <div className="max-w-[420px] w-full">
         <div className="flex gap-x-2">
-          <SearchInput placeholder="Search tickets...." />
-          <SortSelect
+          <TicketSearchInput placeholder="Search tickets...." />
+          <TicketSortSelect
             options={[
               { sortKey: "createdAt", sortValue: "desc", label: "Newest" },
               { sortKey: "createdAt", sortValue: "asc", label: "Oldest" },
