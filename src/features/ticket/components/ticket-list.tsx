@@ -18,7 +18,6 @@ const TicketList = async ({ userId, searchParams }: TicketListProps) => {
     userId,
     searchParams
   );
-  const { hasNextPage } = ticketMetadata;
 
   return (
     <div className="flex-1 flex flex-col items-center gap-y-4 animate-fade-from-top">
