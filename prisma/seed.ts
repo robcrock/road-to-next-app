@@ -38,6 +38,18 @@ const tickets = [
   },
 ];
 
+const comments = [
+  {
+    content: "This is the first comment from the database.",
+  },
+  {
+    content: "This is the second comment from the database.",
+  },
+  {
+    content: "This is the third comment from the database.",
+  },
+];
+
 const seed = async () => {
   /*
     Cleaning up our database
@@ -49,6 +61,7 @@ const seed = async () => {
     Caveat: The note above is only valid if we aren't using
       referential actions like CASCADE or SET NULL.
   */
+  await prisma.comment.deleteMany();
   await prisma.ticket.deleteMany();
   await prisma.user.deleteMany();
 
@@ -63,10 +76,21 @@ const seed = async () => {
   });
 
   // Creating tickets for the admin user
-  await prisma.ticket.createMany({
+  const dbTickets = await prisma.ticket.createManyAndReturn({
     data: tickets.map((ticket) => ({
       ...ticket,
       userId: dbUsers[0].id,
+    })),
+  });
+
+  // Creating comments for the admin user
+  await prisma.comment.createMany({
+    data: comments.map((comment) => ({
+      ...comment,
+      // This is relating our comments to one of the users and
+      // one of the tickets
+      userId: dbUsers[0].id,
+      ticketId: dbTickets[0].id,
     })),
   });
 };

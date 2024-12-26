@@ -21,13 +21,15 @@ model User {
   passwordHash String
   sessions     Session[]
   tickets      Ticket[]
+  Comment      Comment[]
 }
 
 model Session {
-  id        String   @id
+  id        String    @id
   expiresAt DateTime
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments  Comment[]
 
   @@index([userId])
 }
@@ -43,7 +45,23 @@ model Ticket {
   bounty    Int
   userId    String
   user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments  Comment[]
 
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  content   String   @db.VarChar(1024)
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  Session   Session? @relation(fields: [sessionId], references: [id])
+  sessionId String?
+
+  @@index([ticketId])
   @@index([userId])
 }
 
