@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/card";
 import { getAuth } from "@/features/auth/queries/get-auth";
 import { isOwner } from "@/features/auth/utils/is-owner";
+import { Comments } from "@/features/comment/components/comments";
 import { ticketEditPath, ticketPath } from "@/paths";
 import { toCurrencyFromCent } from "@/utils/currency";
 
@@ -63,57 +64,61 @@ const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
       <LucideMoreVertical className="w-4 h-4" />
     </Button>
   );
+
   const moreMenu = isTicketOwner ? (
     <TicketMoreMenu ticket={ticket} trigger={trigger} />
   ) : null;
 
   return (
     <div
-      className={clsx("w-full flex gap-x-1 animate-fade-in-from-top", {
+      className={clsx("w-full flex flex-col gap-y-4 animate-fade-in-from-top", {
         "max-w-[580px]": isDetail,
         "max-w-[420px]": !isDetail,
       })}
     >
-      <Card className="w-full  ">
-        <CardHeader>
-          <CardTitle className="flex gap-2 items-center">
-            <span>{TICKET_ICONS[status]}</span>
-            <span key={id} className="truncate">
-              {title}
+      <div className={"flex gap-x-2"}>
+        <Card className="w-full  ">
+          <CardHeader>
+            <CardTitle className="flex gap-2 items-center">
+              <span>{TICKET_ICONS[status]}</span>
+              <span key={id} className="truncate">
+                {title}
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <span
+              className={clsx(" whitespace-break-spaces", {
+                "line-clamp-3": !isDetail,
+              })}
+            >
+              {content}
             </span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <span
-            className={clsx(" whitespace-break-spaces", {
-              "line-clamp-3": !isDetail,
-            })}
-          >
-            {content}
-          </span>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <p className="text-sm text-muted-foreground">
-            {ticket.deadline} by {ticket.user.username}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {toCurrencyFromCent(ticket.bounty)}
-          </p>
-        </CardFooter>
-      </Card>
-      <div className="flex flex-col gap-y-1">
-        {isDetail ? (
-          <>
-            {editButton}
-            {moreMenu}
-          </>
-        ) : (
-          <>
-            {detailButton}
-            {editButton}
-          </>
-        )}
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <p className="text-sm text-muted-foreground">
+              {ticket.deadline} by {ticket.user.username}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {toCurrencyFromCent(ticket.bounty)}
+            </p>
+          </CardFooter>
+        </Card>
+        <div className="flex flex-col gap-y-1">
+          {isDetail ? (
+            <>
+              {editButton}
+              {moreMenu}
+            </>
+          ) : (
+            <>
+              {detailButton}
+              {editButton}
+            </>
+          )}
+        </div>
       </div>
+      {isDetail ? <Comments ticketId={id} /> : null}
     </div>
   );
 };
