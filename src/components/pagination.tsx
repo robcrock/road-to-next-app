@@ -37,6 +37,8 @@ const Pagination = ({
   };
 
   const handleNextPage = () => {
+    const totalPages = Math.ceil(count / pagination.size);
+    if (pagination.page >= totalPages - 1) return;
     onPagination({ ...pagination, page: pagination.page + 1 });
   };
 
