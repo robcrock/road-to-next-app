@@ -37,6 +37,7 @@ const Pagination = ({
   };
 
   const handleNextPage = () => {
+    // Prevents users from paging past the last page.
     const totalPages = Math.ceil(count / pagination.size);
     if (pagination.page >= totalPages - 1) return;
     onPagination({ ...pagination, page: pagination.page + 1 });

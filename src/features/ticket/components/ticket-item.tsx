@@ -18,6 +18,7 @@ import {
 import { getAuth } from "@/features/auth/queries/get-auth";
 import { isOwner } from "@/features/auth/utils/is-owner";
 import { Comments } from "@/features/comment/components/comments";
+import { CommentWithMetadata } from "@/features/comment/types";
 import { ticketEditPath, ticketPath } from "@/paths";
 import { toCurrencyFromCent } from "@/utils/currency";
 
@@ -35,10 +36,11 @@ type TicketItemProps = {
       };
     };
   }>;
+  comments?: CommentWithMetadata[];
   isDetail?: boolean;
 };
 
-const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
+const TicketItem = async ({ ticket, comments, isDetail }: TicketItemProps) => {
   const { user } = await getAuth();
   const isTicketOwner = isOwner(user, ticket);
   const { id, title, content, status } = ticket;
@@ -118,7 +120,7 @@ const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
           )}
         </div>
       </div>
-      {isDetail ? <Comments ticketId={id} /> : null}
+      {isDetail ? <Comments ticketId={id} comments={comments} /> : null}
     </div>
   );
 };
