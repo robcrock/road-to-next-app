@@ -12,6 +12,8 @@ import { prisma } from "@/lib/prisma";
 import { ticketPath } from "@/paths";
 
 export const deleteComment = async (id: string) => {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   // We authorize by checking it the user is in the database
   const { user } = await getAuthOrRedirect();
 

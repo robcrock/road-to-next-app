@@ -1,65 +1,63 @@
 import { ZodError } from "zod";
 
-export type ActionState = {
+export type ActionState<T = unknown> = {
+  status?: "SUCCESS" | "ERROR";
   message: string;
+  payload?: FormData;
   fieldErrors: Record<string, string[] | undefined>;
   timestamp: number;
-  status?: "SUCCESS" | "ERROR";
-  payload?: FormData;
+  data?: T;
 };
 
-export const EMPTY_ACTION_STATE: ActionState = {
+export const EMPTY_ACTION_STATE: ActionState<undefined> = {
   message: "",
   fieldErrors: {},
   timestamp: Date.now(),
 };
 
-export const fromErrorToActionState = (
+export const fromErrorToActionState = <T = unknown>(
   error: unknown,
   formData?: FormData
-): ActionState => {
+): ActionState<T> => {
   if (error instanceof ZodError) {
-    // if validation error with Zod, return first error message
     return {
       status: "ERROR",
-      message: error.errors[0].message,
-      fieldErrors: error.flatten().fieldErrors,
+      message: "",
       payload: formData,
+      fieldErrors: error.flatten().fieldErrors,
       timestamp: Date.now(),
     };
   } else if (error instanceof Error) {
-    // if another error instance, return error message
-    // e.e. database error
     return {
       status: "ERROR",
       message: error.message,
-      fieldErrors: {},
       payload: formData,
+      fieldErrors: {},
       timestamp: Date.now(),
     };
   } else {
-    // if not an error instance but something else crashed
-    // return generic error message
     return {
       status: "ERROR",
-      message: "An unknown error occurred.",
-      fieldErrors: {},
+      message: "An unknown error occurred",
       payload: formData,
+      fieldErrors: {},
       timestamp: Date.now(),
     };
   }
 };
 
-export const toActionState = (
+export const toActionState = <T = unknown>(
   status: ActionState["status"],
   message: string,
-  formData?: FormData
-): ActionState => {
+  formData?: FormData,
+  data?: T
+): ActionState<T> => {
   return {
     status,
     message,
     fieldErrors: {},
     payload: formData,
     timestamp: Date.now(),
+    data,
   };
 };
