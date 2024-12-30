@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
+import { ReactQueryProvider } from "@/_providers/react-query/react-query-provider";
 import { Sidebar } from "@/app/_navigation/sidebar/components/sidebar";
 import { RedirectToast } from "@/components/redirect-toast";
 import { ThemeProvider } from "@/components/theme/theme-provider";
@@ -39,23 +40,25 @@ export default function RootLayout({
       >
         <NuqsAdapter>
           <ThemeProvider>
-            <Header />
-            <div className="flex h-screen overflow-hidden border-collapse">
-              <Sidebar />
-              <main
-                className="
+            <ReactQueryProvider>
+              <Header />
+              <div className="flex h-screen overflow-hidden border-collapse">
+                <Sidebar />
+                <main
+                  className="
             min-h-screen flex-1
             overflow-y-auto overflow-x-hidden
             py-24 px-8
             bg-secondary/20
             flex flex-col
           "
-              >
-                {children}
-              </main>
-            </div>
-            <Toaster />
-            <RedirectToast />
+                >
+                  {children}
+                </main>
+              </div>
+              <Toaster />
+              <RedirectToast />
+            </ReactQueryProvider>
           </ThemeProvider>
         </NuqsAdapter>
       </body>
